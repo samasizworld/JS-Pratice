@@ -1,12 +1,12 @@
 const matrixCreatorForPartition =(rows,columns)=>{
     const arr = [];//1D array
     //2D array by creating rows of array but we can specify columns by looping
-    for(let k=0;k<rows;k++){
+    for(let k=0;k<rows+1;k++){
         arr[k]=[];
     }
 
-for( let i=0;i<rows;i++){
-    for(let j=0;j<columns;j++){
+for( let i=0;i<rows+1;i++){
+    for(let j=0;j<columns+1;j++){
         //Initialize first rows 
         if(i==0&&j==0){
             arr[i][j]=1;
@@ -24,28 +24,49 @@ for( let i=0;i<rows;i++){
         }
     }
 }
-return arr;
+console.log(arr);
+return arr[rows][columns];
 };
 
 
-const positionToSelectOfMatrix=(r,c)=>{
-    mat=matrixCreatorForPartition(6,6);
-    for(let i=0;i<6;i++){
-        for(let j=0;j<6;j++){
-            if(i==r&&j==c){
-                console.log(`On the Matrix, r = ${i} c= ${j} ,there is element ${mat[i][j]} so that can partition number ${r} by ${mat[i][j]} ways`);
-                console.log(`Let's see this magic`);
-                const noOfDigits=[];
-                for(let k=0;k<r+1;k++){
-                    noOfDigits.push(k);
+const Partition=(number)=>{
+mat = matrixCreatorForPartition(number,number);
+const digits=[];
+for(let i=1;i<number+1;i++){
+    digits.push(i);
+}
+console.log(`The element "${number}" can be partitioned by ${mat} ways by using "${digits}"`);
+console.log(`Let's see the magic!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
+                const printPartitions=(arr, size)=> {
+                    for (let i = 0; i < size; i++)
+                       console.log(arr[i]);
+                    console.log("\n");
                 }
-                console.log(`The  element ${mat[i][j]} can be made by this ${noOfDigits}`);
-                
-                break;
-            }
-        }
-    }
-    
-};
-positionToSelectOfMatrix(5,5);
+                const  makePartition= num =>{
+                    let arr=[num];
+                    let index = 0;
+                    arr[index] = num;
+                    while (true) {
+                       printPartitions(arr, index + 1); //recursive call
+                       let next_value = 0;
+                       while (index >= 0 && arr[index] == 1) {
+                          next_value += arr[index];
+                          index--;
+                       }
+                       if (index < 0)
+                          return;
+                          arr[index]--;
+                          next_value++;
+                       while (next_value > arr[index]) {
+                          arr[index + 1] = arr[index];
+                          next_value = next_value - arr[index];
+                          index++;
+                       }
+                       arr[index + 1] = next_value;
+                       index++;
+                    }
+                 }
+                makePartition(number);
+            };
+Partition(10);
 
